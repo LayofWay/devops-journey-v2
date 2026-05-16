@@ -1,0 +1,19 @@
+---
+- name: Установить пакеты для PostgreSQL
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+    state: present
+    update_cache: yes
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Убедиться, что PostgreSQL запущен
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+  become: yes
+

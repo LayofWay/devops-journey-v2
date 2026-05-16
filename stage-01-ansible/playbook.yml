@@ -1,6 +1,7 @@
 ---
 - name: Настройка PostgreSQL
-  hosts: all
+  hosts: localhost
+  connection: local
   become: yes
   roles:
     - postgresql

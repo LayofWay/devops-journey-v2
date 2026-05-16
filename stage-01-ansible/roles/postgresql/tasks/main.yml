@@ -17,3 +17,17 @@
     enabled: yes
   become: yes
 
+- name: Создать пользователя для приложения
+  postgresql_user:
+    name: appuser
+    password: "SecurePass123!"
+    role_attr_flags: CREATEDB
+  become: yes
+  become_user: postgres
+
+- name: Создать базу данных для приложения
+  postgresql_db:
+    name: appdb
+    owner: appuser
+  become: yes
+  become_user: postgres

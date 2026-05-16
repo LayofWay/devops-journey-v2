@@ -1,0 +1,37 @@
+---
+- name: Установить пакеты для PostgreSQL
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+    state: present
+    update_cache: yes
+  become: yes
+  when: ansible_os_family == "Debian"
+
+- name: Убедиться, что PostgreSQL запущен
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Создать пользователя для приложения
+  postgresql_user:
+    name: appuser
+    password: "SecurePass123!"
+    role_attr_flags: CREATEDB
+    login_user: postgres # ← Подключаемся как пользователь postgres
+    #login_host: localhost
+  become: yes # ← Оставляем sudo, но БЕЗ become_user
+  become_user: postgres # ← Вернуть, но теперь сработает!
+
+- name: Создать базу данных для приложения
+  postgresql_db:
+    name: appdb
+    owner: appuser
+    login_user: postgres # ← Подключаемся как пользователь postgres
+    #login_host: localhost
+  become: yes # ← Оставляем sudo, но БЕЗ become_user
+  become_user: postgres # ← Вернуть, но теперь сработает!

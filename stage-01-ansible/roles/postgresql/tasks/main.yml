@@ -10,6 +10,16 @@
   become: yes
   when: ansible_os_family == "Debian"
 
+- name: Настроить pg_hba.conf для локального доверия (для лабы)
+  lineinfile:
+    path: /etc/postgresql/16/main/pg_hba.conf # ← ПОДСТАВЬ СВОЮ ВЕРСИЮ!
+    regexp: '^local\s+all\s+postgres\s+peer'
+    line: "local   all             postgres                                trust"
+    state: present
+    backup: yes
+  become: yes
+  notify: Restart PostgreSQL
+
 - name: Убедиться, что PostgreSQL запущен
   service:
     name: postgresql
@@ -18,16 +28,15 @@
   become: yes
 
 - name: Создать пользователя для приложения
-  postgresql_user:
-    name: appuser
-    password: "SecurePass123!"
-    role_attr_flags: CREATEDB
-  become: yes
-  become_user: postgres
+  shell: |
+    psql -U postgres -c "CREATE ROLE appuser WITH LOGIN PASSWORD 'SecurePass123!' CREATEDB;"
+  become: yes # ← Только root, БЕЗ become_user!
+  changed_when: false
+  failed_when: false # Не ошибка, если пользователь уже есть
 
 - name: Создать базу данных для приложения
-  postgresql_db:
-    name: appdb
-    owner: appuser
-  become: yes
-  become_user: postgres
+  shell: |
+    psql -U postgres -c "CREATE DATABASE appdb OWNER appuser;"
+  become: yes # ← Только root, БЕЗ become_user!
+  changed_when: false
+  failed_when: false # Не ошибка, если БД уже есть

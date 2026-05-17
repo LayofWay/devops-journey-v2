@@ -29,7 +29,7 @@
 
 - name: Создать пользователя для приложения
   shell: |
-    psql -U postgres -c "CREATE ROLE appuser WITH LOGIN PASSWORD 'SecurePass123!' CREATEDB;"
+    psql -U postgres -c "CREATE ROLE appuser WITH LOGIN PASSWORD '{{ appuser_password }}' CREATEDB;"
   become: yes # ← Только root, БЕЗ become_user!
   changed_when: false
   failed_when: false # Не ошибка, если пользователь уже есть

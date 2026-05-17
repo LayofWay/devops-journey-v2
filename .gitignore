@@ -1,0 +1,24 @@
+# --- Ansible ---
+*.retry
+ansible.cfg
+inventory.ini
+
+# --- Vault ---
+.vault_pass
+*.vault
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log

@@ -1,0 +1,16 @@
+# Виртуальное окружение
+venv/
+__pycache__/
+*.pyc
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Логи и временные файлы
+*.log
+*.tmp

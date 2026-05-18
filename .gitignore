@@ -1,7 +1,7 @@
 # --- Ansible ---
 *.retry
-ansible.cfg
-inventory.ini
+#ansible.cfg
+#inventory.ini
 
 # --- Vault ---
 .vault_pass
